@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Intcore_demo</string>
+    <string name="network_error">No internet connection, check your mobile data or WI-Fi</string>
+    <string name="invalid_credentials">Invalid Email or Password</string>
+    <string name="general_error">Something happened, Please try again later</string>
+    <string name="no_internet_connection">Please, Check your internet connection and try again</string>
+    <string name="tap_to_retry">Tap to retry</string>
+    <string name="welcome_intcore">Welcome Intcore</string>
+    <string name="article">Article</string>
+    <string name="all_news">All News</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="email_or_phone_number">Email or Phone Number</string>
+    <string name="name">name</string>
+    <string name="phone_number">phone number</string>
+    <string name="re_password">Re-Password</string>
+    <string name="change_password">Change password</string>
+    <string name="update_profile">Update profile</string>
+
+</resources>
