@@ -11,7 +11,7 @@ public class Validation {
         return m.matches();
     }
 
-    public static boolean isVaildPhoneNumber(String phone) {
+    public static boolean isValidPhoneNumber(String phone) {
         Pattern p = Pattern.compile("(0/91)?[7-9][0-9]{9}");
         return p.matcher(phone).matches();
     }

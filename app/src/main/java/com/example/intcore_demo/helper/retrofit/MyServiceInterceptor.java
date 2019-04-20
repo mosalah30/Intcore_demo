@@ -33,8 +33,7 @@ public class MyServiceInterceptor implements Interceptor {
     @Inject
     SharedPreferencesHelper sharedPreferencesHelper;
     private String userToken;
-    private String languageCode;
-    private String languageId;
+
     private Request.Builder requestBuilder;
 
     @Inject
@@ -45,13 +44,6 @@ public class MyServiceInterceptor implements Interceptor {
         this.userToken = userToken;
     }
 
-    public void setLanguageCode(String languageCode) {
-        this.languageCode = languageCode;
-    }
-
-    public void setLanguageId(String languageId) {
-        this.languageId = languageId;
-    }
 
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
@@ -65,13 +57,7 @@ public class MyServiceInterceptor implements Interceptor {
 
         } else
             requestBuilder.removeHeader("No-Authentication");
-        if (request.header("Single-Language") == null || "false".equalsIgnoreCase(request.headers().get("Single-Language"))) {
-            addLanguageCodeHeader();
-            addLanguageIdHeader();
-            requestBuilder.removeHeader("Single-Language");
 
-        } else
-            requestBuilder.removeHeader("Single-Language");
 
         return chain.proceed(requestBuilder.build());
     }
@@ -89,31 +75,5 @@ public class MyServiceInterceptor implements Interceptor {
             requestBuilder.addHeader("Authorization", "Bearer {" + userToken + "}");
         }
     }
-
-    private void addLanguageCodeHeader() {
-        if (languageCode == null) {
-            languageCode = sharedPreferencesHelper.getLanguageCode();
-            if (languageCode == null)
-                Log.e("MyServiceInterceptor", "Null language code in API call that requires language");
-            else
-                requestBuilder.addHeader("Language-Code", languageCode);
-
-        } else
-            requestBuilder.addHeader("Language-Code", languageCode);
-    }
-
-    private void addLanguageIdHeader() {
-        if (languageId == null) {
-            languageId = sharedPreferencesHelper.getLanguageId();
-
-            if (languageId == null)
-                Log.e("MyServiceInterceptor", "Null language Id in API call that requires language");
-            else
-                requestBuilder.addHeader("languageid", languageId);
-
-        } else
-            requestBuilder.addHeader("languageid", languageId);
-    }
-
 
 }

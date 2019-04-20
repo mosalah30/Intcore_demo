@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.intcore_demo.Constants;
 import com.example.intcore_demo.R;
 import com.example.intcore_demo.databinding.ActivityLoginBinding;
 import com.example.intcore_demo.login.viewmodel.LogInViewModel;
@@ -14,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
-public class LoginActivity extends AppCompatActivity {
+public class LogInActivity extends AppCompatActivity {
     ActivityLoginBinding binding;
     LogInViewModel viewModel;
 
@@ -25,6 +26,9 @@ public class LoginActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(LogInViewModel.class);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
+        binding.btnLogIn.setOnClickListener(v -> signIn());
+        binding.btnSignup.setOnClickListener(v -> navigateToSignUpActivity());
+        subscribeForMessagesError();
     }
 
     private void navigateToSignUpActivity() {
@@ -33,17 +37,28 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void signIn() {
+        if (viewModel.isValidLogin()) {
+            viewModel.getSignIn();
+            navigateToProfileActivity();
+        }
+    }
+
     private void subscribeForMessagesError() {
         viewModel.getErrorMessageEvent().observe(this, messageText -> Toast.makeText(this, messageText, Toast.LENGTH_LONG).show());
     }
 
     private void navigateToProfileActivity() {
-        if (viewModel.isLogin()) {
-            Intent intent = new Intent(this, ProfileActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-        }
+        viewModel.getProfileIdSingleLiveEvent().observe(this, profileId -> {
+            if (profileId != null) {
+                Intent intent = new Intent(this, ProfileActivity.class);
+                intent.putExtra(Constants.ID_KEY, profileId);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }
 

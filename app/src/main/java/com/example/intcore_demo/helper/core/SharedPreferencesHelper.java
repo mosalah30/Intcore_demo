@@ -19,18 +19,10 @@ public class SharedPreferencesHelper {
     public static final String PREF_NAME = "Intcore_prefs";
 
     private static final String USER_TOKEN = "user_token";
-
     private static final String DEVICE_TOKEN = "device_token";
-    private static final String LANGUAGE_CODE = "language_code";
-    private static final String LANGUAGE_ID = "id";
     private static final String USER_LOGGED_IN = "user_logged_in";
-    private static final String TRACK_ID = "current_event_id";
     private static final String USER_ID = "user_id";
-    private static final String TRACKS_COUNT = "tracks_count";
 
-    private static final String COUNTRY_CURRENCY = "country_currency";
-
-    private static final String COUNTRY = "country";
 
 
     private SharedPreferences sharedPreferences;
@@ -78,15 +70,6 @@ public class SharedPreferencesHelper {
         return "1";
     }
 
-    @Nullable
-    public String getLanguageCode() {
-        return sharedPreferences.getString(LANGUAGE_CODE, "");
-    }
-
-    @Nullable
-    public String getLanguageId() {
-        return sharedPreferences.getString(LANGUAGE_ID, "");
-    }
 
     public boolean isUserLoggedIn() {
         return sharedPreferences.getBoolean(USER_LOGGED_IN, false);
@@ -95,45 +78,5 @@ public class SharedPreferencesHelper {
     public void setUserLoggedIn(boolean isUserLoggedIn) {
         sharedPreferences.edit().putBoolean(USER_LOGGED_IN, isUserLoggedIn).apply();
     }
-
-    /**
-     * @return current event id, default value is -1 if not found
-     */
-    public int getTrackId() {
-        return sharedPreferences.getInt(TRACK_ID, -1);
-    }
-
-    public void setTrackId(int trackId) {
-        sharedPreferences.edit().putInt(TRACK_ID, trackId).apply();
-    }
-
-    public int getTracksCount() {
-        return sharedPreferences.getInt(TRACKS_COUNT, 1);
-    }
-
-    public void setTracksCount(int userId) {
-        sharedPreferences.edit().putInt(TRACKS_COUNT, userId).apply();
-    }
-
-
-    public void saveCountryCurrency(String countryCurrency) {
-        sharedPreferences.edit().putString(COUNTRY_CURRENCY, countryCurrency).apply();
-    }
-
-    @Nullable
-    public String getCountryCurrency() {
-        return sharedPreferences.getString(COUNTRY_CURRENCY, "");
-    }
-
-
-    public void saveCountry(String countryCurrency) {
-        sharedPreferences.edit().putString(COUNTRY_CURRENCY, countryCurrency).apply();
-    }
-
-    @Nullable
-    public String getCountry() {
-        return sharedPreferences.getString(COUNTRY_CURRENCY, "");
-    }
-
 
 }

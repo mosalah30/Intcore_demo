@@ -3,6 +3,7 @@ package com.example.intcore_demo.login.viewmodel;
 import com.example.intcore_demo.App;
 import com.example.intcore_demo.helper.livedata.Resource;
 import com.example.intcore_demo.helper.livedata.SingleLiveEvent;
+import com.example.intcore_demo.helper.utilities.Validation;
 import com.example.intcore_demo.login.model.SignInBody;
 import com.example.intcore_demo.login.model.SignUpBody;
 import com.example.intcore_demo.login.model.repo.LogInRepository;
@@ -23,7 +24,7 @@ public class LogInViewModel extends ViewModel {
     private final MutableLiveData<String> mutableRePasswordLiveData;
     private final MutableLiveData<String> mutablePhoneLiveData;
 
-    private final MutableLiveData<JsonElement> mutableJsonElementLiveData;
+    private final SingleLiveEvent<Integer> profileIdSingleLiveEvent;
     private LiveData<Resource<JsonElement>> jsonElementLiveData;
     private Observer<Resource<JsonElement>> jsonElementObserver;
     private final MutableLiveData<Boolean> dataLoading;
@@ -40,7 +41,7 @@ public class LogInViewModel extends ViewModel {
         mutableRePasswordLiveData = new MutableLiveData<>();
         mutablePhoneLiveData = new MutableLiveData<>();
 
-        mutableJsonElementLiveData = new MutableLiveData<>();
+        profileIdSingleLiveEvent = new SingleLiveEvent<>();
         showNoNetworkScreenEvent = new MutableLiveData<>();
         dataLoading = new MutableLiveData<>();
         jsonElementObserver = getProfileResponse();
@@ -48,12 +49,20 @@ public class LogInViewModel extends ViewModel {
 
     }
 
-    public void getSignUp(SignUpBody body) {
+    public void getSignUp() {
+        SignUpBody body = new SignUpBody();
+        body.setEmail(getMutableEmailLiveData().getValue());
+        body.setPassword(getMutablePasswordLiveData().getValue());
+        body.setName(getMutableNameLiveData().getValue());
+        body.setPhone(getMutablePhoneLiveData().getValue());
         jsonElementLiveData = logInRepository.getSignUp(body);
         jsonElementLiveData.observeForever(jsonElementObserver);
     }
 
-    public void getSignIn(SignInBody body) {
+    public void getSignIn() {
+        SignInBody body = new SignInBody();
+        body.setName(getMutableEmailLiveData().getValue());
+        body.setPassword(getMutablePasswordLiveData().getValue());
         jsonElementLiveData = logInRepository.getSignIn(body);
         jsonElementLiveData.observeForever(jsonElementObserver);
     }
@@ -90,7 +99,14 @@ public class LogInViewModel extends ViewModel {
                     case SUCCESS:
                         dataLoading.setValue(false);
                         if (resource.getData() != null) {
-                            mutableJsonElementLiveData.setValue(resource.getData());
+                            if (resource.getData().getAsJsonObject().get("errors") != null) {
+                                for (int i = 0; i < resource.getData().getAsJsonObject().getAsJsonObject("errors").getAsJsonArray().size(); i++) {
+                                    errorMessageEvent.setValue(resource.getData().getAsJsonObject().getAsJsonObject("errors").getAsJsonArray().get(i).getAsJsonObject().get("message").toString());
+                                }
+                            }
+                            if (resource.getData().getAsJsonObject().getAsJsonObject("user").has("id")) {
+                                profileIdSingleLiveEvent.setValue(resource.getData().getAsJsonObject().getAsJsonObject("user").get("id").getAsInt());
+                            }
                             showNoNetworkScreenEvent.setValue(false);
                         } else
                             showNoNetworkScreenEvent.setValue(true);
@@ -106,34 +122,53 @@ public class LogInViewModel extends ViewModel {
 
     }
 
-    private String isValidEmailAtSignUp() {
+    private String validEmailAtSignIn() {
         if (getMutableEmailLiveData().getValue() != null && !getMutableEmailLiveData().getValue().trim().isEmpty()) {
             return getMutableEmailLiveData().getValue();
         }
         return null;
     }
 
-    private String isValidPassword() {
+    private String validEmailAtSignUp() {
+        if (getMutableEmailLiveData().getValue() != null && !getMutableEmailLiveData().getValue().trim().isEmpty()
+                && Validation.isValidEmailAddress(getMutableEmailLiveData().getValue())) {
+            return getMutableEmailLiveData().getValue();
+        }
+        return null;
+    }
+
+    private String validPhoneNumber() {
+        if (getMutablePhoneLiveData().getValue() != null && !getMutablePhoneLiveData().getValue().trim().isEmpty()
+                && Validation.isValidPhoneNumber(getMutableEmailLiveData().getValue())) {
+            return getMutableEmailLiveData().getValue();
+        }
+        return null;
+    }
+
+    private String validPassword() {
         if (mutablePasswordLiveData.getValue() != null && !mutablePasswordLiveData.getValue().trim().isEmpty()) {
             return mutablePasswordLiveData.getValue();
         }
         return null;
     }
 
-    public boolean isLogin() {
-        return isValidEmailAtSignUp() != null && isValidPassword() != null;
+    public boolean isValidSignUp() {
+        return validEmailAtSignUp() != null && validPassword() != null && validPhoneNumber() != null;
+    }
+
+    public boolean isValidLogin() {
+        return validEmailAtSignIn() != null && validPassword() != null;
     }
 
     @Override
-
     protected void onCleared() {
         super.onCleared();
         if (jsonElementLiveData != null)
             jsonElementLiveData.removeObserver(jsonElementObserver);
     }
 
-    public MutableLiveData<JsonElement> getMutableProfileResponseLiveData() {
-        return mutableJsonElementLiveData;
+    public MutableLiveData<Integer> getMutableProfileResponseLiveData() {
+        return profileIdSingleLiveEvent;
     }
 
     public MutableLiveData<Boolean> getDataLoading() {
@@ -148,4 +183,7 @@ public class LogInViewModel extends ViewModel {
         return errorMessageEvent;
     }
 
+    public SingleLiveEvent<Integer> getProfileIdSingleLiveEvent() {
+        return profileIdSingleLiveEvent;
+    }
 }

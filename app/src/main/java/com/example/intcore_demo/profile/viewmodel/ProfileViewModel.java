@@ -1,9 +1,12 @@
 package com.example.intcore_demo.profile.viewmodel;
 
 import com.example.intcore_demo.App;
+import com.example.intcore_demo.helper.core.SharedPreferencesHelper;
 import com.example.intcore_demo.helper.livedata.Resource;
 import com.example.intcore_demo.helper.livedata.SingleLiveEvent;
 import com.example.intcore_demo.profile.model.ProfileResponse;
+
+import javax.inject.Inject;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -18,6 +21,8 @@ public class ProfileViewModel extends ViewModel {
     private final MutableLiveData<Boolean> showNoNetworkScreenEvent;
 
     private final SingleLiveEvent<String> errorMessageEvent;
+    @Inject
+    SharedPreferencesHelper sharedPreferencesHelper;
 
     public ProfileViewModel() {
         App.getAppComponent().inject(this);
@@ -39,9 +44,9 @@ public class ProfileViewModel extends ViewModel {
 
     private Observer<Resource<ProfileResponse>> getProfileResponse() {
 
-        return listResource -> {
-            if (listResource != null) {
-                switch (listResource.getStatus()) {
+        return resource -> {
+            if (resource != null) {
+                switch (resource.getStatus()) {
                     case LOADING:
                         dataLoading.setValue(true);
                         showNoNetworkScreenEvent.setValue(false);
@@ -49,17 +54,21 @@ public class ProfileViewModel extends ViewModel {
                         break;
                     case SUCCESS:
                         dataLoading.setValue(false);
-                        if (listResource.getData() != null) {
-                            mutableProfileResponseLiveData.setValue(listResource.getData());
+                        if (resource.getData() != null) {
+                            mutableProfileResponseLiveData.setValue(resource.getData());
+                            sharedPreferencesHelper.setUserId(resource.getData().getUser().getId());
+                            sharedPreferencesHelper.setUserToken(resource.getData().getUser().getApiToken());
                             showNoNetworkScreenEvent.setValue(false);
 
                         } else
                             showNoNetworkScreenEvent.setValue(true);
+                        errorMessageEvent.setValue(resource.message);
 
                         break;
                     case ERROR:
                         dataLoading.setValue(false);
-                        errorMessageEvent.setValue(listResource.message);
+                        errorMessageEvent.setValue(resource.message);
+
                         break;
 
                 }

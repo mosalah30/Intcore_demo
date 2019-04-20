@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".login.view.SignUpActivity" />
-        <activity android:name=".login.view.LoginActivity" />
+        <activity android:name=".login.view.LogInActivity" />
         <activity android:name=".profile.view.ProfileActivity" />
 
         <meta-data
