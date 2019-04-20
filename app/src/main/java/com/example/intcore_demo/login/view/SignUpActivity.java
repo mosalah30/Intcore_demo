@@ -17,13 +17,12 @@ import androidx.lifecycle.ViewModelProviders;
 
 
 public class SignUpActivity extends AppCompatActivity {
-    private ActivitySignupBinding binding;
     private LogInViewModel viewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_signup);
+        ActivitySignupBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_signup);
         viewModel = ViewModelProviders.of(this).get(LogInViewModel.class);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
@@ -45,10 +44,10 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     private void navigateToProfileActivity() {
-        viewModel.getProfileIdSingleLiveEvent().observe(this, profileId -> {
-            if (profileId != null) {
+        viewModel.getProfileIdSingleLiveEvent().observe(this, profileToken -> {
+            if (profileToken != null) {
                 Intent intent = new Intent(this, ProfileActivity.class);
-                intent.putExtra(Constants.ID_KEY, profileId);
+                intent.putExtra(Constants.Token_ID_KEY, profileToken);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

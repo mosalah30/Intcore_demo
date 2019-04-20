@@ -43,6 +43,7 @@
 
         <ImageView
             android:id="@+id/imageView"
+            imageUrl="@{viewModel.mutableImageLiveData}"
             android:layout_width="@dimen/dp_150"
             android:layout_height="@dimen/dp_150"
             android:layout_marginTop="@dimen/dp_50"
@@ -58,8 +59,9 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
+            android:hint="@string/name"
             android:inputType="textPersonName"
-            android:text="@string/name"
+            android:text="@{viewModel.mutableNameLiveData}"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -72,22 +74,24 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
+            android:hint="@string/email"
             android:inputType="textPersonName"
-            android:text="@string/email"
+            android:text="@{viewModel.mutableEmailLiveData}"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editText8" />
 
-        <TextView
+        <EditText
             android:id="@+id/editText10"
             style="@style/viewAppearance"
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             android:ems="10"
+            android:hint="@string/password"
             android:inputType="textPersonName"
             android:padding="@dimen/dp_8"
-            android:text="@string/password"
+            android:text="@{viewModel.mutablePasswordLiveData}"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintEnd_toStartOf="@+id/button4"
             app:layout_constraintStart_toStartOf="parent"
@@ -98,6 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/change_password"
             app:layout_constraintBottom_toBottomOf="@+id/editText10"
             app:layout_constraintEnd_toEndOf="parent"
@@ -116,5 +121,31 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/editText11"
+            style="@style/viewAppearance"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:ems="10"
+            android:hint="@string/phone_number"
+            android:inputType="textPersonName"
+            android:text="@{viewModel.mutablePhoneLiveData}"
+            app:layout_constraintEnd_toStartOf="@+id/button2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText10" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="Change Phone number"
+            app:layout_constraintBottom_toBottomOf="@+id/editText11"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/editText11"
+            app:layout_constraintTop_toTopOf="@+id/editText11" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

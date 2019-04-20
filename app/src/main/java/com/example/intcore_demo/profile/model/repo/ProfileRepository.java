@@ -3,12 +3,14 @@ package com.example.intcore_demo.profile.model.repo;
 import com.example.intcore_demo.helper.core.AppExecutors;
 import com.example.intcore_demo.helper.livedata.ApiResponse;
 import com.example.intcore_demo.helper.livedata.NetworkBoundResource;
+import com.example.intcore_demo.helper.livedata.NetworkOnlyResource;
 import com.example.intcore_demo.helper.livedata.Resource;
 import com.example.intcore_demo.helper.utilities.ShouldFetch;
 import com.example.intcore_demo.profile.model.ProfileResponse;
 import com.example.intcore_demo.profile.model.User;
 import com.example.intcore_demo.profile.model.local.ProfileDao;
 import com.example.intcore_demo.profile.model.remote.ProfileService;
+import com.google.gson.JsonElement;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -29,6 +31,7 @@ public class ProfileRepository {
         this.profileService = profileService;
         this.appExecutors = new AppExecutors();
     }
+
 
     public LiveData<Resource<User>> getProfile(String token) {
 
@@ -59,6 +62,22 @@ public class ProfileRepository {
             @Override
             protected LiveData<ApiResponse<ProfileResponse>> createCall() {
                 return profileService.getProfileResponse(token);
+            }
+        }.asLiveData();
+    }
+
+    public LiveData<Resource<JsonElement>> updateProfile(String token, String name,
+                                                         String email, String image) {
+        return new NetworkOnlyResource<JsonElement, JsonElement>(appExecutors) {
+            @Override
+            protected JsonElement processResult(@Nullable JsonElement result) {
+                return result;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<JsonElement>> createCall() {
+                return profileService.updateProfile(token, name, email, image);
             }
         }.asLiveData();
     }

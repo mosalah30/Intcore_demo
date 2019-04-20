@@ -49,10 +49,10 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void navigateToProfileActivity() {
-        viewModel.getProfileIdSingleLiveEvent().observe(this, profileId -> {
-            if (profileId != null) {
+        viewModel.getProfileIdSingleLiveEvent().observe(this, profileToken -> {
+            if (profileToken != null) {
                 Intent intent = new Intent(this, ProfileActivity.class);
-                intent.putExtra(Constants.ID_KEY, profileId);
+                intent.putExtra(Constants.Token_ID_KEY, profileToken);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

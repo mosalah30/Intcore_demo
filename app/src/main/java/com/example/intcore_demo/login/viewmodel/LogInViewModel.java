@@ -24,7 +24,7 @@ public class LogInViewModel extends ViewModel {
     private final MutableLiveData<String> mutableRePasswordLiveData;
     private final MutableLiveData<String> mutablePhoneLiveData;
 
-    private final SingleLiveEvent<Integer> profileIdSingleLiveEvent;
+    private final SingleLiveEvent<String> profileIdSingleLiveEvent;
     private LiveData<Resource<JsonElement>> jsonElementLiveData;
     private Observer<Resource<JsonElement>> jsonElementObserver;
     private final MutableLiveData<Boolean> dataLoading;
@@ -44,7 +44,7 @@ public class LogInViewModel extends ViewModel {
         profileIdSingleLiveEvent = new SingleLiveEvent<>();
         showNoNetworkScreenEvent = new MutableLiveData<>();
         dataLoading = new MutableLiveData<>();
-        jsonElementObserver = getProfileResponse();
+        jsonElementObserver = getJsonElementObserver();
         errorMessageEvent = new SingleLiveEvent<>();
 
     }
@@ -87,7 +87,7 @@ public class LogInViewModel extends ViewModel {
         return mutablePhoneLiveData;
     }
 
-    private Observer<Resource<JsonElement>> getProfileResponse() {
+    private Observer<Resource<JsonElement>> getJsonElementObserver() {
 
         return resource -> {
             if (resource != null) {
@@ -105,7 +105,7 @@ public class LogInViewModel extends ViewModel {
                                 }
                             }
                             if (resource.getData().getAsJsonObject().getAsJsonObject("user").has("id")) {
-                                profileIdSingleLiveEvent.setValue(resource.getData().getAsJsonObject().getAsJsonObject("user").get("id").getAsInt());
+                                profileIdSingleLiveEvent.setValue(resource.getData().getAsJsonObject().getAsJsonObject("user").get("api_token").getAsString());
                             }
                             showNoNetworkScreenEvent.setValue(false);
                         } else
@@ -152,8 +152,19 @@ public class LogInViewModel extends ViewModel {
         return null;
     }
 
+    private String validPasswordSignUp() {
+        if (mutablePasswordLiveData.getValue() != null && !mutablePasswordLiveData.getValue().trim().isEmpty()) {
+            if (mutableRePasswordLiveData.getValue() != null && !mutableRePasswordLiveData.getValue().trim().isEmpty()) {
+                if (mutablePasswordLiveData.getValue().equals(mutableRePasswordLiveData.getValue())) {
+                    return mutablePasswordLiveData.getValue();
+                }
+            }
+        }
+        return null;
+    }
+
     public boolean isValidSignUp() {
-        return validEmailAtSignUp() != null && validPassword() != null && validPhoneNumber() != null;
+        return validEmailAtSignUp() != null && validPasswordSignUp() != null && validPhoneNumber() != null;
     }
 
     public boolean isValidLogin() {
@@ -167,7 +178,7 @@ public class LogInViewModel extends ViewModel {
             jsonElementLiveData.removeObserver(jsonElementObserver);
     }
 
-    public MutableLiveData<Integer> getMutableProfileResponseLiveData() {
+    public MutableLiveData<String> getMutableProfileResponseLiveData() {
         return profileIdSingleLiveEvent;
     }
 
@@ -183,7 +194,7 @@ public class LogInViewModel extends ViewModel {
         return errorMessageEvent;
     }
 
-    public SingleLiveEvent<Integer> getProfileIdSingleLiveEvent() {
+    public SingleLiveEvent<String> getProfileIdSingleLiveEvent() {
         return profileIdSingleLiveEvent;
     }
 }
