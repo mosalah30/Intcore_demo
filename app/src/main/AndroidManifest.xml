@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.intcore_demo">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".App"
         android:icon="@mipmap/ic_launcher"
@@ -20,9 +23,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".login.view.SignUpActivity" />
-        <activity android:name=".login.view.LogInActivity" />
+        <activity android:name=".login.view.SignInActivity" />
         <activity android:name=".profile.view.ProfileActivity" />
-
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

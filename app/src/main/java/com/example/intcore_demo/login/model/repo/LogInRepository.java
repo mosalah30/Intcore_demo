@@ -1,20 +1,20 @@
 package com.example.intcore_demo.login.model.repo;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+
 import com.example.intcore_demo.helper.core.AppExecutors;
 import com.example.intcore_demo.helper.livedata.ApiResponse;
 import com.example.intcore_demo.helper.livedata.NetworkOnlyResource;
 import com.example.intcore_demo.helper.livedata.Resource;
 import com.example.intcore_demo.login.model.SignInBody;
-import com.example.intcore_demo.login.model.SignUpBody;
 import com.example.intcore_demo.login.model.remote.LogInService;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
 
 
 @Singleton
@@ -31,7 +31,15 @@ public class LogInRepository {
         this.appExecutors = new AppExecutors();
     }
 
-    public LiveData<Resource<JsonElement>> getSignUp(SignUpBody body) {
+    public LiveData<Resource<JsonElement>> getSignUp(String email, String password, String name, String phone) {
+        JsonObject object = new JsonObject();
+
+        object.addProperty("name", name);
+        object.addProperty("phone", phone);
+        object.addProperty("password", password);
+        object.addProperty("email", email);
+
+
         return new NetworkOnlyResource<JsonElement, JsonElement>(appExecutors) {
             @Override
             protected JsonElement processResult(@Nullable JsonElement result) {
@@ -41,12 +49,15 @@ public class LogInRepository {
             @NonNull
             @Override
             protected LiveData<ApiResponse<JsonElement>> createCall() {
-                return logInService.signUp(body);
+                return logInService.signUp(object);
             }
         }.asLiveData();
     }
 
-    public LiveData<Resource<JsonElement>> getSignIn(SignInBody body) {
+    public LiveData<Resource<JsonElement>> getSignIn(String nameOrEmail, String password) {
+        SignInBody body = new SignInBody();
+        body.setName(nameOrEmail);
+        body.setPassword(password);
         return new NetworkOnlyResource<JsonElement, JsonElement>(appExecutors) {
             @Override
             protected JsonElement processResult(@Nullable JsonElement result) {

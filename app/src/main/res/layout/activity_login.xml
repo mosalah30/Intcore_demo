@@ -17,31 +17,32 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/editText"
+
+            android:id="@+id/et_email"
             style="@style/viewAppearance"
             android:layout_marginStart="@dimen/dp_8"
             android:layout_marginTop="@dimen/dp_32"
             android:layout_marginEnd="@dimen/dp_8"
             android:ems="10"
+            android:maxLines="1"
+            android:inputType="textEmailAddress"
             android:hint="@string/email_or_phone_number"
-            android:inputType="textPersonName"
-            android:text="@{viewModel.mutableEmailLiveData}"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorWhite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/et_password"
             style="@style/viewAppearance"
             android:layout_marginTop="16dp"
             android:hint="@string/password"
-            android:inputType="textPersonName"
-            android:text="@{viewModel.mutablePasswordLiveData}"
-            android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toEndOf="@+id/editText"
-            app:layout_constraintStart_toStartOf="@+id/editText"
-            app:layout_constraintTop_toBottomOf="@+id/editText" />
+            android:maxLines="1"
+            android:inputType="textPassword"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="@+id/et_email"
+            app:layout_constraintStart_toStartOf="@+id/et_email"
+            app:layout_constraintTop_toBottomOf="@+id/et_email" />
 
         <TextView
             android:id="@+id/textView2"
@@ -50,24 +51,24 @@
             android:layout_marginTop="240dp"
             android:fontFamily="@font/audiowide"
             android:text="@string/log_in"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/sp_50"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.506"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/btn_logIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_32"
             android:text="@string/log_in"
-            app:layout_constraintEnd_toEndOf="@+id/editText2"
-            app:layout_constraintStart_toStartOf="@+id/editText2"
-            app:layout_constraintTop_toBottomOf="@+id/editText2" />
+            app:layout_constraintEnd_toEndOf="@+id/et_password"
+            app:layout_constraintStart_toStartOf="@+id/et_password"
+            app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/btn_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dp_50"
             android:text="@string/create_an_account"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorWhite"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/btn_signup"
             app:layout_constraintEnd_toStartOf="@+id/btn_signup"

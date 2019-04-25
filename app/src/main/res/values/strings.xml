@@ -7,7 +7,7 @@
     <string name="tap_to_retry">Tap to retry</string>
     <string name="welcome_intcore">Welcome Intcore</string>
     <string name="article">Article</string>
-    <string name="all_news">All News</string>
+    <string name="profile">profile</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="log_in">Log in</string>
@@ -19,5 +19,12 @@
     <string name="re_password">Re-Password</string>
     <string name="change_password">Change password</string>
     <string name="update_profile">Update profile</string>
+    <string name="logout">Logout</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="change_phone_number">Change Phone number</string>
+    <string name="change_number_phone">change number phone</string>
+    <string name="used_email_phone">the Email or  phone was used before</string>
+
 
 </resources>

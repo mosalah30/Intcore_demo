@@ -1,20 +1,34 @@
 package com.example.intcore_demo.profile.model.remote;
 
+import androidx.lifecycle.LiveData;
+
+import com.example.intcore_demo.Constants;
 import com.example.intcore_demo.helper.livedata.ApiResponse;
 import com.example.intcore_demo.profile.model.ProfileResponse;
 import com.google.gson.JsonElement;
 
-import androidx.lifecycle.LiveData;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
-import retrofit2.http.Path;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ProfileService {
-    @GET("get-profile?api_token={api_token}")
-    LiveData<ApiResponse<ProfileResponse>> getProfileResponse(@Path("api_token") String token);
+    @GET("get-profile?")
+    LiveData<ApiResponse<ProfileResponse>> getProfileResponse(@Query("api_token") String token);
 
-    @PATCH("update-profile?api_token={api_token}&name={name}&email={email}&image=uploads/{image}")
-//.png
-    LiveData<ApiResponse<JsonElement>> updateProfile(@Path("api_token") String token, @Path("name") String name,
-                                                     @Path("email") String email, @Path("image") String image);
+    @PATCH("update-password?")
+    LiveData<ApiResponse<JsonElement>> updatePassword(@Query("api_token") String token, @Query("new_password") String newPassword, @Query("old_password") String oldPassword);
+
+    @PATCH("update-phone?")
+    LiveData<ApiResponse<JsonElement>> updatePhone(@Query("api_token") String token, @Query("phone") String phone, @Query("temp_phone_code") String phoneCode);
+
+    @POST("request-update-phone")
+    LiveData<ApiResponse<JsonElement>> requestUpdatePhone(@Query(Constants.Token_ID_KEY) String token, @Query("phone") String phoneNumber);
+
+    @PATCH("update-profile?")
+    LiveData<ApiResponse<JsonElement>> updateProfile(@Query("api_token") String token, @Query("name") String name,
+
+                                                     @Query("email") String email, @Query("image") String image);
+
+
 }

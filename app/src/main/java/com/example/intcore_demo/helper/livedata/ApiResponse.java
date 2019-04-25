@@ -5,13 +5,14 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.example.intcore_demo.App;
 import com.example.intcore_demo.R;
 import com.example.intcore_demo.helper.utilities.NetworkUtils;
 
 import java.lang.ref.WeakReference;
 
-import androidx.annotation.Nullable;
 import retrofit2.Response;
 
 /**
@@ -65,6 +66,12 @@ public class ApiResponse<T> {
                 switch (response.code()) {
                     case 401:
                         errorMessage = appResources.getString(R.string.invalid_credentials);
+                        break;
+                    case 422:
+                        errorMessage = appResources.getString(R.string.invalid_credentials);
+                        break;
+                    case 302:
+                        errorMessage = appResources.getString(R.string.used_email_phone);
                         break;
                     default:
                         errorMessage = appResources.getString(R.string.general_error);

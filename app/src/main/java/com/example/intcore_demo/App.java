@@ -2,14 +2,14 @@ package com.example.intcore_demo;
 
 import android.content.Context;
 
+import androidx.multidex.MultiDexApplication;
+
 import com.example.intcore_demo.di.AppComponent;
 import com.example.intcore_demo.di.DaggerAppComponent;
 import com.example.intcore_demo.di.module.ApiModule;
 import com.example.intcore_demo.di.module.AppModule;
 import com.example.intcore_demo.di.module.DaoModule;
 import com.example.intcore_demo.di.module.NetModule;
-
-import androidx.multidex.MultiDexApplication;
 
 public class App extends MultiDexApplication {
 

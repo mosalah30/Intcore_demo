@@ -33,119 +33,112 @@
             layout="@layout/layout_no_internet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
+            android:onClick="@{()->viewModel.getProfile()}"
             android:visibility="@{safeUnbox(viewModel.showNoNetworkScreenEvent) ? View.VISIBLE : View.GONE}"
             tools:visibility="gone" />
-        <!--android:onClick="@{()->viewModel.ge()}"-->
+
         <include
             android:id="@+id/include"
             layout="@layout/layout_toolbar" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            imageUrl="@{viewModel.mutableImageLiveData}"
-            android:layout_width="@dimen/dp_150"
-            android:layout_height="@dimen/dp_150"
-            android:layout_marginTop="@dimen/dp_50"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include"
-            tools:srcCompat="@tools:sample/avatars" />
-
-        <EditText
-            android:id="@+id/editText8"
-            style="@style/viewAppearance"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:hint="@string/name"
-            android:inputType="textPersonName"
-            android:text="@{viewModel.mutableNameLiveData}"
-            android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-        <EditText
-            android:id="@+id/editText9"
-            style="@style/viewAppearance"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:hint="@string/email"
-            android:inputType="textPersonName"
-            android:text="@{viewModel.mutableEmailLiveData}"
-            android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText8" />
-
-        <EditText
-            android:id="@+id/editText10"
-            style="@style/viewAppearance"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            android:ems="10"
-            android:hint="@string/password"
-            android:inputType="textPersonName"
-            android:padding="@dimen/dp_8"
-            android:text="@{viewModel.mutablePasswordLiveData}"
-            android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toStartOf="@+id/button4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText9" />
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/change_password"
-            app:layout_constraintBottom_toBottomOf="@+id/editText10"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/editText10"
-            app:layout_constraintTop_toTopOf="@+id/editText10" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_16"
-            android:background="@color/colorPrimary"
-            android:text="@string/update_profile"
-            android:textColor="@color/colorPrimaryDark"
-            app:cornerRadius="@dimen/dp_8"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            tools:visibility="visible"
+            android:visibility="@{safeUnbox(viewModel.showNoNetworkScreenEvent) ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/include">
 
-        <EditText
-            android:id="@+id/editText11"
-            style="@style/viewAppearance"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            android:ems="10"
-            android:hint="@string/phone_number"
-            android:inputType="textPersonName"
-            android:text="@{viewModel.mutablePhoneLiveData}"
-            app:layout_constraintEnd_toStartOf="@+id/button2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText10" />
+            <ImageView
+                android:id="@+id/iv_image"
+                imageUrl="@{viewModel.mutableImageLiveData}"
+                android:layout_width="@dimen/dp_150"
+                android:layout_height="@dimen/dp_150"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
-            android:text="Change Phone number"
-            app:layout_constraintBottom_toBottomOf="@+id/editText11"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/editText11"
-            app:layout_constraintTop_toTopOf="@+id/editText11" />
+            <EditText
+                android:id="@+id/et_name"
+                style="@style/viewAppearance"
+                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_24"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:ems="10"
+                android:hint="@string/name"
+                android:inputType="textPersonName"
+                android:text="@{viewModel.mutableNameLiveData}"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_image" />
 
+            <EditText
+                android:id="@+id/et_email"
+                style="@style/viewAppearance"
+                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_24"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:ems="10"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:text="@{viewModel.mutableEmailLiveData}"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_name" />
+
+            <Button
+                android:id="@+id/btn_chang_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/change_password"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.934"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_update_phone" />
+
+            <Button
+                android:id="@+id/btn_update_profile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_16"
+                android:background="@color/colorPrimary"
+                android:text="@string/update_profile"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/et_phone"
+                style="@style/viewAppearance"
+                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:ems="10"
+                android:hint="@string/phone_number"
+                android:inputType="phone"
+                android:text="@{viewModel.mutablePhoneLiveData}"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintEnd_toStartOf="@+id/btn_update_phone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_email" />
+
+            <Button
+                android:id="@+id/btn_update_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/change_number_phone"
+                app:layout_constraintBottom_toBottomOf="@+id/et_phone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/et_phone" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

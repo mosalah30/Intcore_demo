@@ -4,20 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.intcore_demo.Constants;
-import com.example.intcore_demo.R;
-import com.example.intcore_demo.databinding.ActivityLoginBinding;
-import com.example.intcore_demo.login.viewmodel.LogInViewModel;
-import com.example.intcore_demo.profile.view.ProfileActivity;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
-public class LogInActivity extends AppCompatActivity {
+import com.example.intcore_demo.R;
+import com.example.intcore_demo.databinding.ActivityLoginBinding;
+import com.example.intcore_demo.login.viewmodel.LogInViewModel;
+import com.example.intcore_demo.profile.view.ProfileActivity;
+
+public class SignInActivity extends AppCompatActivity {
     ActivityLoginBinding binding;
     LogInViewModel viewModel;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,6 +26,10 @@ public class LogInActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(LogInViewModel.class);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
+        if (viewModel.sharedPreferencesHelper.isUserLoggedIn()) {
+            navigateToProfileActivity();
+            finish();
+        }
         binding.btnLogIn.setOnClickListener(v -> signIn());
         binding.btnSignup.setOnClickListener(v -> navigateToSignUpActivity());
         subscribeForMessagesError();
@@ -38,9 +42,15 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void signIn() {
-        if (viewModel.isValidLogin()) {
-            viewModel.getSignIn();
-            navigateToProfileActivity();
+        String password = binding.etPassword.getText().toString();
+        String email = binding.etEmail.getText().toString();
+        if (viewModel.isValidSignIn(email, password)) {
+            viewModel.getSignIn(email, password);
+            viewModel.getIsUserLoginSingleLiveEvent().observe(this, isLogin -> {
+                if (isLogin != null && isLogin) {
+                    navigateToProfileActivity();
+                }
+            });
         }
     }
 
@@ -49,16 +59,12 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void navigateToProfileActivity() {
-        viewModel.getProfileIdSingleLiveEvent().observe(this, profileToken -> {
-            if (profileToken != null) {
                 Intent intent = new Intent(this, ProfileActivity.class);
-                intent.putExtra(Constants.Token_ID_KEY, profileToken);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
             }
-        });
     }
-}
+
 

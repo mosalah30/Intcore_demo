@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.example.intcore_demo.login.view.LogInActivity;
-
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.intcore_demo.login.view.SignInActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -17,16 +17,17 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void navigateToLoginActivity() {
-        Intent intent = new Intent(this, LogInActivity.class);
+        Intent intent = new Intent(this, SignInActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-
+        finish();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         new Handler().postDelayed(SplashActivity.this::navigateToLoginActivity, 3000);
-        finish();
+
     }
 }

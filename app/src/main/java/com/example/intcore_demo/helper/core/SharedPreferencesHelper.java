@@ -2,10 +2,10 @@ package com.example.intcore_demo.helper.core;
 
 import android.content.SharedPreferences;
 
+import androidx.annotation.Nullable;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import androidx.annotation.Nullable;
 
 
 /**
@@ -22,6 +22,7 @@ public class SharedPreferencesHelper {
     private static final String DEVICE_TOKEN = "device_token";
     private static final String USER_LOGGED_IN = "user_logged_in";
     private static final String USER_ID = "user_id";
+    private static final String Phone = "user_phone";
 
 
 
@@ -47,6 +48,14 @@ public class SharedPreferencesHelper {
         sharedPreferences.edit().putInt(USER_ID, userId).apply();
     }
 
+    public void setPhone(String phone) {
+        sharedPreferences.edit().putString(Phone, phone).apply();
+    }
+
+    @Nullable
+    public String getPhone() {
+        return sharedPreferences.getString(Phone, "");
+    }
     @Nullable
     public String getUserToken() {
         return sharedPreferences.getString(USER_TOKEN, "");
